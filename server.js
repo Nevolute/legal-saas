@@ -83,6 +83,88 @@ function extractSearchTerms(query) {
   return uniqueWords.slice(0, 20).join(' OR ');
 }
 
+// Helper: Detect if query is in English
+function isEnglish(query) {
+  if (!query) return true;
+
+  // Check for non-Latin scripts (Hindi, other Indian languages)
+  const devanagariPattern = /[\u0900-\u097F]/; // Hindi/Sanskrit
+  const bengaliPattern = /[\u0980-\u09FF]/; // Bengali
+  const tamilPattern = /[\u0B80-\u0BFF]/; // Tamil
+  const teluguPattern = /[\u0C00-\u0C7F]/; // Telugu
+  const gujaratiPattern = /[\u0A80-\u0AFF]/; // Gujarati
+  const kannadaPattern = /[\u0C80-\u0CFF]/; // Kannada
+  const malayalamPattern = /[\u0D00-\u0D7F]/; // Malayalam
+  const punjabiPattern = /[\u0A00-\u0A7F]/; // Punjabi
+
+  if (devanagariPattern.test(query) ||
+    bengaliPattern.test(query) ||
+    tamilPattern.test(query) ||
+    teluguPattern.test(query) ||
+    gujaratiPattern.test(query) ||
+    kannadaPattern.test(query) ||
+    malayalamPattern.test(query) ||
+    punjabiPattern.test(query)) {
+    return false;
+  }
+
+  // Check for common non-English words/patterns
+  const commonHindiWords = ['मैं', 'मुझे', 'क्या', 'कैसे', 'कब', 'कहाँ', 'पुलिस', 'गिरफ्तार'];
+  const queryLower = query.toLowerCase();
+
+  if (commonHindiWords.some(word => query.includes(word))) {
+    return false;
+  }
+
+  return true;
+}
+
+// Helper: Detect if query is gibberish/nonsensical
+function isGibberish(query) {
+  if (!query || query.trim().length < 3) return false;
+
+  const normalized = query.toLowerCase().trim();
+
+  // Check 1: Very long word without spaces (likely keyboard mashing)
+  const words = normalized.split(/\s+/);
+  const hasVeryLongWord = words.some(word => word.length > 25);
+  if (hasVeryLongWord) return true;
+
+  // Check 2: Ratio of vowels to consonants (English typically has ~40% vowels)
+  const letters = normalized.replace(/[^a-z]/g, '');
+  if (letters.length < 3) return false;
+
+  const vowels = letters.match(/[aeiou]/g) || [];
+  const vowelRatio = vowels.length / letters.length;
+
+  // If less than 10% vowels or more than 80% vowels, likely gibberish
+  if (vowelRatio < 0.1 || vowelRatio > 0.8) return true;
+
+  // Check 3: Repeating character patterns (e.g., "aaaaaa", "asdfasdf")
+  const hasRepeatingPattern = /(.)\1{5,}/.test(normalized); // Same char 6+ times
+  if (hasRepeatingPattern) return true;
+
+  // Check 4: No recognizable English words (check against common words)
+  const commonWords = new Set([
+    'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i',
+    'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
+    'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
+    'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their',
+    // Legal terms
+    'police', 'arrest', 'bail', 'court', 'lawyer', 'case', 'law', 'legal',
+    'me', 'was', 'is', 'are', 'am', 'been', 'being', 'what', 'when', 'where'
+  ]);
+
+  const recognizedWords = words.filter(word =>
+    word.length > 2 && commonWords.has(word)
+  );
+
+  // If query has 3+ words but no recognized words, it's likely gibberish
+  if (words.length >= 3 && recognizedWords.length === 0) return true;
+
+  return false;
+}
+
 // Helper: Detect if query needs clarification
 function needsClarification(query) {
   if (!query || query.trim().length < 3) {
@@ -154,11 +236,11 @@ function classifyIntent(query) {
   const normalized = query.toLowerCase();
 
   const intents = {
-    arrest: ['arrest', 'detained', 'custody', 'apprehended'],
-    bail: ['bail', 'release', 'bond', 'surety'],
-    police_misconduct: ['bribe', 'extortion', 'torture', 'harassment', 'money'],
-    false_accusation: ['false', 'fake', 'fabricated', 'malicious', 'wrongful'],
-    legal_procedure: ['court', 'hearing', 'trial', 'chargesheet', 'fir']
+    arrest: ['arrest', 'detained', 'custody', 'apprehended', 'caught', 'seized'],
+    bail: ['bail', 'release', 'bond', 'surety', 'parole'],
+    police_misconduct: ['bribe', 'extortion', 'torture', 'harassment', 'money', 'beating', 'abuse'],
+    false_accusation: ['false', 'fake', 'fabricated', 'malicious', 'wrongful', 'innocent'],
+    legal_procedure: ['court', 'hearing', 'trial', 'chargesheet', 'fir', 'case', 'judge', 'magistrate']
   };
 
   const scores = {};
@@ -168,6 +250,58 @@ function classifyIntent(query) {
 
   const topIntent = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
   return topIntent[1] > 0 ? topIntent[0] : 'general';
+}
+
+// Helper: Check if query is legal-related
+function isLegalQuery(query) {
+  if (!query) return false;
+
+  const normalized = query.toLowerCase();
+
+  // Legal keywords - comprehensive list
+  const legalKeywords = [
+    // People/Entities
+    'police', 'cop', 'officer', 'constable', 'inspector', 'authority', 'law enforcement',
+    'lawyer', 'advocate', 'attorney', 'counsel', 'judge', 'magistrate', 'court',
+    // Actions
+    'arrest', 'detained', 'custody', 'apprehended', 'caught', 'seized', 'imprisoned',
+    'bail', 'release', 'bond', 'surety', 'parole',
+    'charge', 'accused', 'defendant', 'plaintiff', 'prosecution', 'defense',
+    // Legal concepts
+    'fir', 'case', 'complaint', 'chargesheet', 'hearing', 'trial', 'verdict', 'judgment',
+    'warrant', 'summon', 'notice', 'subpoena',
+    'rights', 'law', 'legal', 'illegal', 'crime', 'criminal', 'offense', 'violation',
+    // Specific crimes/issues
+    'harassment', 'assault', 'theft', 'robbery', 'fraud', 'cheating', 'forgery',
+    'murder', 'rape', 'violence', 'abuse', 'domestic', 'bribe', 'corruption', 'extortion',
+    // Legal documents/concepts
+    'constitution', 'article', 'section', 'act', 'code', 'ipc', 'bns', 'crpc',
+    'innocent', 'guilty', 'evidence', 'witness', 'testimony', 'confession',
+    // Legal situations
+    'imprisoned', 'jail', 'prison', 'lockup', 'remand', 'custody',
+    'investigation', 'interrogation', 'statement',
+    'victim', 'accused', 'complainant', 'suspect'
+  ];
+
+  // Check if query contains at least one legal keyword
+  const hasLegalKeyword = legalKeywords.some(keyword => normalized.includes(keyword));
+  if (hasLegalKeyword) return true;
+
+  // Check for common legal question patterns
+  const legalPatterns = [
+    /can (police|they|i) (arrest|detain|charge)/i,
+    /what (are|is) my (rights|right)/i,
+    /how (to|do i) (file|lodge|register) (fir|complaint|case)/i,
+    /(is it|it is) (legal|illegal|crime|criminal)/i,
+    /can i (sue|file case|get bail|appeal)/i,
+    /(was|am|been) (arrested|detained|charged|accused)/i,
+    /need (lawyer|legal help|legal advice)/i
+  ];
+
+  const matchesPattern = legalPatterns.some(pattern => pattern.test(query));
+  if (matchesPattern) return true;
+
+  return false;
 }
 
 // Helper: Generate process steps from matched cases
@@ -266,6 +400,68 @@ app.post('/api/query', (req, res) => {
     const userQuery = req.body.query || '';
     console.log('📝 Query received:', userQuery);
 
+    // Check if query is in English
+    if (!isEnglish(userQuery)) {
+      console.log('🌐 Non-English language detected');
+      return res.json({
+        needsClarification: true,
+        clarification: {
+          question: 'I can only provide guidance in English at this time.',
+          suggestions: [
+            'Please rephrase your query in English',
+            'Example: "Police arrested me without showing warrant"',
+            'Example: "Bail application was denied"'
+          ],
+          reason: 'language',
+          message: '🌐 I am currently learning to support multiple Indian languages. For now, please ask your question in English, and I will do my best to help you.'
+        },
+        disclaimer: "⚠️ NOT LEGAL ADVICE - English queries only"
+      });
+    }
+
+    // Check if query is gibberish/nonsensical
+    if (isGibberish(userQuery)) {
+      console.log('🤔 Gibberish input detected');
+      return res.json({
+        unableToAnswer: true,
+        message: {
+          title: 'I cannot understand this query.',
+          explanation: 'Your input appears to be random characters or nonsensical text. I need a clear description of your legal situation in plain English to help you.',
+          suggestions: [
+            '🔹 Describe your situation in a complete sentence',
+            '🔹 Example: "Police arrested me without showing warrant"',
+            '🔹 Example: "My bail application was denied"',
+            '🔹 Use normal words to explain what happened'
+          ],
+          futureNote: '💡 Tip: I work best when you describe your legal issue in simple, clear English sentences.',
+          disclaimer: '⚠️ This is NOT legal advice. Always consult a qualified lawyer for your specific situation.'
+        },
+        auditId: `audit_${Date.now()}`
+      });
+    }
+
+    // Check if query is actually legal-related
+    if (!isLegalQuery(userQuery)) {
+      console.log('📚 Non-legal query detected');
+      return res.json({
+        unableToAnswer: true,
+        message: {
+          title: 'This doesn\'t appear to be a legal question.',
+          explanation: 'I am a specialized legal guidance tool for Indian law. I can only help with legal matters like arrests, bail, police conduct, court procedures, and your legal rights.',
+          suggestions: [
+            '🔹 I can help with: Police arrests, bail procedures, false accusations',
+            '🔹 I can help with: Court hearings, legal rights, FIR filing',
+            '🔹 I can help with: Police harassment, legal procedures, criminal cases',
+            '🔹 Example: "Police arrested me without showing warrant"',
+            '🔹 Example: "How to file FIR for harassment?"'
+          ],
+          futureNote: '💡 For non-legal questions, please try a general search engine or appropriate specialized service.',
+          disclaimer: '⚠️ This tool provides legal information only, not advice on other topics.'
+        },
+        auditId: `audit_${Date.now()}`
+      });
+    }
+
     // Check if clarification is needed
     const clarification = needsClarification(userQuery);
     if (clarification.needed) {
@@ -329,6 +525,26 @@ app.post('/api/query', (req, res) => {
       `).all(category);
 
       console.log(`🔄 Using fallback: ${category} cases`);
+    }
+
+    // Final check: If still no matches, return unable-to-answer response
+    if (matches.length === 0) {
+      console.log('😞 Unable to find relevant cases');
+      return res.json({
+        unableToAnswer: true,
+        message: {
+          title: 'I apologize, but I cannot provide specific guidance for your query at this moment.',
+          explanation: 'I am still learning and expanding my knowledge base. Your question may be too specific or outside my current expertise.',
+          suggestions: [
+            '🔹 Try rephrasing your query with more general terms',
+            '🔹 Focus on the main legal issue (arrest, bail, police conduct, etc.)',
+            '🔹 Consult a qualified lawyer for immediate assistance'
+          ],
+          futureNote: '📚 I am continuously being updated with more cases and better understanding. Please try again in the future, and I should be able to assist you better.',
+          disclaimer: '⚠️ This is NOT legal advice. Always consult a qualified lawyer for your specific situation.'
+        },
+        auditId: `audit_${Date.now()}`
+      });
     }
 
     // Build response

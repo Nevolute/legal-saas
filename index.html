@@ -1,51 +1,250 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>⚖️ Legal Guidance India</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, sans-serif; background: #f5f5f5; color: #333; }
-    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
-    h1 { color: #2196F3; margin: 20px 0; }
-    .disclaimer { background: #ffebee; color: #c62828; padding: 15px; border-left: 4px solid #c62828; margin: 15px 0; border-radius: 4px; }
-    form { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 20px 0; }
-    textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; font-family: inherit; }
-    button { margin: 12px 0; padding: 12px 24px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-    button:hover { background: #1976D2; }
-    button:disabled { background: #ccc; cursor: not-allowed; }
-    .results { display: none; }
-    .results.active { display: block; }
-    .section { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .step { background: #f5f5f5; padding: 12px; margin: 10px 0; border-left: 3px solid #2196F3; border-radius: 4px; }
-    .scam { background: #ffe0e0; padding: 12px; margin: 10px 0; border-left: 3px solid #c62828; border-radius: 4px; }
-    .clarification { background: #fff3e0; padding: 20px; margin: 15px 0; border-left: 4px solid #ff9800; border-radius: 4px; }
-    .clarification h3 { color: #f57c00; margin-bottom: 10px; }
-    .suggestions { list-style: none; padding: 0; margin: 15px 0; }
-    .suggestions li { background: white; padding: 10px 15px; margin: 8px 0; border-radius: 4px; cursor: pointer; border: 1px solid #ddd; transition: all 0.2s; }
-    .suggestions li:hover { background: #e3f2fd; border-color: #2196F3; transform: translateX(5px); }
-    .intent-badge { display: inline-block; background: #e3f2fd; color: #1976D2; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
-    .loading { display: none; color: #666; margin: 10px 0; }
-    .loading.active { display: block; }
-    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc; border-top-color: #2196F3; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .case-card { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 4px; border-left: 3px solid #4CAF50; }
-    .case-card strong { color: #1976D2; }
-    .case-card .category { display: inline-block; background: #4CAF50; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #2196F3;
+      margin: 20px 0;
+    }
+
+    .disclaimer {
+      background: #ffebee;
+      color: #c62828;
+      padding: 15px;
+      border-left: 4px solid #c62828;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    form {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    button {
+      margin: 12px 0;
+      padding: 12px 24px;
+      background: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #1976D2;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .results {
+      display: none;
+    }
+
+    .results.active {
+      display: block;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .step {
+      background: #f5f5f5;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 3px solid #2196F3;
+      border-radius: 4px;
+    }
+
+    .scam {
+      background: #ffe0e0;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 3px solid #c62828;
+      border-radius: 4px;
+    }
+
+    .clarification {
+      background: #fff3e0;
+      padding: 20px;
+      margin: 15px 0;
+      border-left: 4px solid #ff9800;
+      border-radius: 4px;
+    }
+
+    .clarification h3 {
+      color: #f57c00;
+      margin-bottom: 10px;
+    }
+
+    .unable-to-answer {
+      background: #f3e5f5;
+      padding: 20px;
+      margin: 15px 0;
+      border-left: 4px solid #9c27b0;
+      border-radius: 4px;
+    }
+
+    .unable-to-answer h3 {
+      color: #7b1fa2;
+      margin-bottom: 10px;
+    }
+
+    .unable-to-answer p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .unable-to-answer ul {
+      margin: 15px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .unable-to-answer li {
+      padding: 8px 0;
+    }
+
+    .suggestions {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .suggestions li {
+      background: white;
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      transition: all 0.2s;
+    }
+
+    .suggestions li:hover {
+      background: #e3f2fd;
+      border-color: #2196F3;
+      transform: translateX(5px);
+    }
+
+    .intent-badge {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1976D2;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      display: none;
+      color: #666;
+      margin: 10px 0;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ccc;
+      border-top-color: #2196F3;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .case-card {
+      background: #f9f9f9;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border-left: 3px solid #4CAF50;
+    }
+
+    .case-card strong {
+      color: #1976D2;
+    }
+
+    .case-card .category {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      margin-left: 8px;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>⚖️ Legal Guidance for India</h1>
     <p>Based on 100+ real court cases (2020-2025)</p>
-    
+
     <div class="disclaimer">
       ⚠️ NOT LEGAL ADVICE - Consult a lawyer immediately
     </div>
 
     <form id="f">
-      <label><strong>Describe your legal situation:</strong></label><br/>
-      <textarea id="q" placeholder="Example: Police arrested me without showing a warrant&#10;Example: Bail application was denied by the court&#10;Example: Police officer asked for money to drop charges" rows="4" required></textarea>
+      <label><strong>Describe your legal situation:</strong></label><br />
+      <textarea id="q"
+        placeholder="Example: Police arrested me without showing a warrant&#10;Example: Bail application was denied by the court&#10;Example: Police officer asked for money to drop charges"
+        rows="4" required></textarea>
       <button type="submit" id="submitBtn">🔍 Get Guidance</button>
       <div id="l" class="loading">
         <span class="spinner"></span>Analyzing your query...
@@ -59,12 +258,22 @@
       <ul id="suggestionsList" class="suggestions"></ul>
     </div>
 
+    <!-- Unable to Answer Section -->
+    <div id="unableToAnswerSection" class="unable-to-answer" style="display: none;">
+      <h3>💭 I'm Still Learning</h3>
+      <p><strong id="unableTitle"></strong></p>
+      <p id="unableExplanation"></p>
+      <h4>Suggestions:</h4>
+      <ul id="unableSuggestionsList"></ul>
+      <p id="unableFutureNote" style="font-style: italic; color: #7b1fa2;"></p>
+    </div>
+
     <!-- Results Section -->
     <div id="r" class="results">
       <div class="section" style="background: #fff3e0;">
-        <strong>🚨 IMPORTANT</strong><br/>
-        This is EDUCATIONAL content from real cases.<br/>
-        <strong>CONSULT A LAWYER IMMEDIATELY</strong><br/>
+        <strong>🚨 IMPORTANT</strong><br />
+        This is EDUCATIONAL content from real cases.<br />
+        <strong>CONSULT A LAWYER IMMEDIATELY</strong><br />
         <span id="intentBadge" class="intent-badge"></span>
         ID: <code id="id"></code>
       </div>
@@ -88,42 +297,44 @@
 
   <script>
     const URL = 'http://localhost:3001/api/query'; // Change to production URL when deploying
-    
+
     const form = document.getElementById('f');
     const queryInput = document.getElementById('q');
     const submitBtn = document.getElementById('submitBtn');
     const loading = document.getElementById('l');
     const results = document.getElementById('r');
     const clarificationSection = document.getElementById('clarificationSection');
-    
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const query = queryInput.value.trim();
       if (!query) return;
-      
+
       // Show loading state
       loading.classList.add('active');
       submitBtn.disabled = true;
       results.classList.remove('active');
       clarificationSection.style.display = 'none';
-      
+
       try {
         const res = await fetch(URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query })
         });
-        
+
         const data = await res.json();
-        
+
         // Check if clarification is needed
         if (data.needsClarification) {
           displayClarification(data.clarification);
+        } else if (data.unableToAnswer) {
+          displayUnableToAnswer(data.message);
         } else {
           displayResults(data);
         }
-        
+
       } catch (err) {
         alert('Error: ' + err.message + '\n\nMake sure API is running: npm start');
       } finally {
@@ -131,14 +342,23 @@
         submitBtn.disabled = false;
       }
     });
-    
+
     function displayClarification(clarification) {
       clarificationSection.style.display = 'block';
-      document.getElementById('clarificationQuestion').textContent = clarification.question;
-      
+
+      // Check if this is a language detection message
+      if (clarification.message) {
+        document.getElementById('clarificationQuestion').innerHTML = `
+          <strong>${clarification.question}</strong><br/><br/>
+          ${clarification.message}
+        `;
+      } else {
+        document.getElementById('clarificationQuestion').textContent = clarification.question;
+      }
+
       const suggestionsList = document.getElementById('suggestionsList');
       suggestionsList.innerHTML = '';
-      
+
       clarification.suggestions.forEach(suggestion => {
         const li = document.createElement('li');
         li.textContent = suggestion;
@@ -146,6 +366,8 @@
           // If suggestion is an example, use it as the query
           if (suggestion.startsWith('Example:')) {
             queryInput.value = suggestion.replace('Example: ', '').replace(/"/g, '');
+          } else if (suggestion.startsWith('Please rephrase')) {
+            queryInput.focus();
           } else {
             queryInput.value += ' ' + suggestion;
           }
@@ -154,32 +376,50 @@
         };
         suggestionsList.appendChild(li);
       });
-      
+
       results.classList.remove('active');
+      document.getElementById('unableToAnswerSection').style.display = 'none';
     }
-    
+
+    function displayUnableToAnswer(message) {
+      const section = document.getElementById('unableToAnswerSection');
+      section.style.display = 'block';
+
+      document.getElementById('unableTitle').textContent = message.title;
+      document.getElementById('unableExplanation').textContent = message.explanation;
+      document.getElementById('unableFutureNote').textContent = message.futureNote;
+
+      const suggestionsList = document.getElementById('unableSuggestionsList');
+      suggestionsList.innerHTML = message.suggestions
+        .map(s => `<li>${s}</li>`)
+        .join('');
+
+      results.classList.remove('active');
+      clarificationSection.style.display = 'none';
+    }
+
     function displayResults(data) {
       clarificationSection.style.display = 'none';
-      
+
       // Display intent badge if available
       if (data.intent) {
         const badge = document.getElementById('intentBadge');
         badge.textContent = `Intent: ${data.intent.replace(/_/g, ' ').toUpperCase()}`;
         badge.style.display = 'inline-block';
       }
-      
+
       document.getElementById('id').textContent = data.auditId;
-      
+
       // Display steps
       document.getElementById('steps').innerHTML = data.process.steps
         .map(s => `<div class="step"><strong>Step ${s.step}:</strong> ${s.action}<br/><small>${s.basis}</small></div>`)
         .join('');
-      
+
       // Display scam flags
       document.getElementById('scams').innerHTML = data.scamFlags
         .map(s => `<div class="scam"><strong>🚩 ${s.name}</strong><br/>Indicator: ${s.indicator}<br/><strong>Counter:</strong> ${s.counter}</div>`)
         .join('');
-      
+
       // Display sources
       document.getElementById('sources').innerHTML = data.sources
         .map(c => `<div class="case-card">
@@ -188,12 +428,13 @@
           <br/><a href="${c.url}" target="_blank" rel="noopener noreferrer">Read Full Case →</a>
         </div>`)
         .join('');
-      
+
       results.classList.add('active');
-      
+
       // Scroll to results
       results.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   </script>
 </body>
+
 </html>
