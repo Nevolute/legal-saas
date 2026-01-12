@@ -6,20 +6,19 @@
             "use": "@vercel/node"
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/api/(.*)",
-            "dest": "server.js"
+            "source": "/api/(.*)",
+            "destination": "/server.js"
         },
         {
-            "src": "/health",
-            "dest": "server.js"
+            "source": "/health",
+            "destination": "/server.js"
         }
     ],
-    "includeFiles": [
-        "data/legal_cases.db"
-    ],
-    "env": {
-        "NODE_ENV": "production"
+    "functions": {
+        "server.js": {
+            "maxDuration": 10
+        }
     }
 }
