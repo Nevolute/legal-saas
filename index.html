@@ -400,6 +400,7 @@
 
     function displayResults(data) {
       clarificationSection.style.display = 'none';
+      document.getElementById('unableToAnswerSection').style.display = 'none';
 
       // Display intent badge if available
       if (data.intent) {
