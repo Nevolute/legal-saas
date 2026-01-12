@@ -90,7 +90,239 @@ file:///path/to/legal-saas/index.html
 
 ---
 
+## 💡 Usage Examples
+
+This section provides real examples of queries and their responses to help you understand how to use the application effectively.
+
+### ✅ Legal Queries (Successful Matches)
+
+#### Example 1: Police Arrest Without Warrant
+
+**Query:**
+```
+police arrested me without showing warrant
+```
+
+**Response Summary:**
+- **Intent**: ARREST
+- **Steps Provided**: 4 actionable steps
+  - Step 1: Remain silent (Article 20(3))
+  - Step 2: Demand written grounds (Article 22(1))
+  - Step 3: Request magistrate inspection (Article 22(2))
+  - Step 4: Consult lawyer immediately
+- **Red Flags**: 3 warnings about police misconduct
+- **Cases Cited**: 3 relevant court judgments (Hyderabad Court 2024, Andhra Pradesh Court 2024, etc.)
+
+---
+
+#### Example 2: Police Bribery/Extortion
+
+**Query:**
+```
+officer took bribe from me
+```
+
+**Response Summary:**
+- **Intent**: POLICE_MISCONDUCT  
+- **Steps Provided**: Detailed guidance on reporting corruption
+- **Red Flags**: Warnings about extortion and illegal detention
+- **Cases Cited**: Cases specifically about police corruption and bribery
+
+---
+
+#### Example 3: Bail Application
+
+**Query:**
+```
+bail application was denied
+```
+
+**Response Summary:**
+- **Intent**: BAIL
+- **Steps Provided**: How to appeal bail denial
+- **Red Flags**: Common bail rejection issues
+- **Cases Cited**: Recent bail-related judgments
+
+---
+
+### ❌ Non-Legal Queries (Polite Redirection)
+
+#### Example 1: Cooking Question
+
+**Query:**
+```
+how to cook pasta
+```
+
+**Response:**
+```
+💭 I'm Still Learning
+
+This doesn't appear to be a legal question.
+
+I am a specialized legal guidance tool for Indian law. I can only help 
+with legal matters like arrests, bail, police conduct, court procedures, 
+and your legal rights.
+
+Suggestions:
+🔹 I can help with: Police arrests, bail procedures, false accusations
+🔹 I can help with: Court hearings, legal rights, FIR filing
+🔹 I can help with: Police harassment, legal procedures, criminal cases
+🔹 Example: "Police arrested me without showing warrant"
+🔹 Example: "How to file FIR for harassment?"
+
+💡 For non-legal questions, please try a general search engine or 
+appropriate specialized service.
+```
+
+---
+
+#### Example 2: General Knowledge
+
+**Query:**
+```
+what is the capital of France
+```
+
+**Response:**
+Same polite redirection as above, explaining the tool is for legal queries only.
+
+---
+
+### 🌐 Non-English Queries (Language Detection)
+
+#### Example: Hindi Query
+
+**Query:**
+```
+मुझे पुलिस ने गिरफ्तार किया
+```
+*(Translation: Police arrested me)*
+
+**Response:**
+```
+❓ Need More Information
+
+I can only provide guidance in English at this time.
+
+🌐 I am currently learning to support multiple Indian languages. 
+For now, please ask your question in English, and I will do my 
+best to help you.
+
+Suggestions:
+• Please rephrase your query in English
+• Example: "Police arrested me without showing warrant"
+• Example: "Bail application was denied"
+```
+
+**Supported Languages for Detection:**
+- Hindi (Devanagari)
+- Bengali
+- Tamil
+- Telugu
+- Gujarati
+- Kannada
+- Malayalam
+- Punjabi
+
+---
+
+### ❓ Vague Queries (Clarification Requests)
+
+#### Example 1: Single Word
+
+**Query:**
+```
+help
+```
+
+**Response:**
+```
+❓ Need More Information
+
+I need more details to help you. Can you describe what happened?
+
+Suggestions (clickable):
+• Were you arrested? Describe the circumstances
+• Do you need information about bail?
+• Are you facing police harassment?
+```
+
+---
+
+#### Example 2: Incomplete Information
+
+**Query:**
+```
+police
+```
+
+**Response:**
+```
+❓ Need More Information
+
+Can you provide more context about "police"?
+
+Suggestions:
+• What exactly happened?
+• When did this occur?
+• What is your main concern?
+```
+
+---
+
+### 🎯 Best Practices for Queries
+
+#### ✅ Good Queries (Detailed)
+
+- "Police arrested me without showing any warrant or FIR copy"
+- "My bail application was denied by the magistrate, what are my options?"
+- "Police officer asked for money to drop false charges against me"
+- "I was detained at police station for 48 hours without being produced before magistrate"
+
+#### ⚠️ Vague Queries (Will Trigger Clarification)
+
+- "arrest"
+- "help"
+- "legal"
+- "police"
+
+#### ❌ Non-Legal Queries (Will Be Redirected)
+
+- "How to cook biryani"
+- "Weather forecast"
+- "Movie recommendations"
+- Any query not related to Indian law
+
+---
+
+### 📝 Query Tips
+
+1. **Be Specific**: Describe your situation in detail
+2. **Use Legal Terms**: If you know them (arrest, bail, FIR, warrant, etc.)
+3. **Mention Timeline**: When did the incident occur?
+4. **State Your Concern**: What are you worried about?
+5. **Ask Clear Questions**: What specific guidance do you need?
+
+**Example of a Well-Formed Query:**
+```
+I was arrested yesterday by police at my home without showing me any 
+warrant. They detained me for 24 hours and asked for money to release me. 
+What are my legal rights and what should I do?
+```
+
+This query will get:
+- Relevant arrest procedure cases
+- Rights during detention
+- Guidance on police misconduct
+- Steps to take immediately
+
+---
+
 ## 🗄️ Database Schema
+
+*[Rest of README continues...]*
+
 
 ### Main Table: `cases`
 | Column | Type | Description |
@@ -427,19 +659,23 @@ const URL = 'http://localhost:3001/api/query'; // Development
 
 ## 🗺️ Roadmap
 
-### Phase 1: MVP (Current)
+### Phase 1: MVP ✅ (Complete)
 - [x] SQLite database with 100 cases
 - [x] FTS5 intelligent search
 - [x] REST API
 - [x] Basic frontend
 - [x] Vercel deployment
 
-### Phase 2: Enhanced Intelligence (Planned)
-- [ ] Natural language query processing
-- [ ] Clarifying questions system
-- [ ] Query intent classification
-- [ ] Synonym handling
-- [ ] Multi-language support (Hindi, regional languages)
+### Phase 2: Enhanced Intelligence ✅ (Complete)
+- [x] Natural language query processing
+- [x] Clarifying questions system
+- [x] Query intent classification
+- [x] Synonym expansion
+- [x] Gibberish detection
+- [x] Non-English language detection (8 Indian languages)
+- [x] Legal context validation
+- [x] Responsive mobile-first design
+- [ ] Multi-language support for responses (Hindi, regional languages)
 
 ### Phase 3: Features (Future)
 - [ ] User accounts and history
@@ -447,6 +683,8 @@ const URL = 'http://localhost:3001/api/query'; // Development
 - [ ] Lawyer directory integration
 - [ ] Real-time chat support
 - [ ] Mobile app (React Native)
+- [ ] Advanced analytics and insights
+- [ ] Case law updates automation
 
 ---
 

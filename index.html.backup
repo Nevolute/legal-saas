@@ -16,8 +16,8 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-      color: #4a5568;
+      background: #f5f5f5;
+      color: #333;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -32,18 +32,15 @@
 
     /* Typography - Responsive */
     h1 {
-      color: #667eea;
+      color: #2196F3;
       margin: 15px 0 10px;
       font-size: 1.5rem;
       line-height: 1.2;
-      font-weight: 600;
     }
 
     h2 {
       font-size: 1.25rem;
       margin-bottom: 10px;
-      color: #5a67d8;
-      font-weight: 600;
     }
 
     p {
@@ -52,23 +49,22 @@
 
     /* Disclaimer */
     .disclaimer {
-      background: #fff5f5;
-      color: #c53030;
+      background: #ffebee;
+      color: #c62828;
       padding: 12px;
-      border-left: 4px solid #fc8181;
+      border-left: 4px solid #c62828;
       margin: 12px 0;
-      border-radius: 8px;
+      border-radius: 4px;
       font-size: 0.9rem;
     }
 
     /* Form - Optimized for Touch */
     form {
-      background: #ffffff;
+      background: white;
       padding: 18px;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       margin: 15px 0;
-      border: 1px solid #e2e8f0;
     }
 
     form label {
@@ -76,63 +72,54 @@
       margin-bottom: 8px;
       font-weight: 600;
       font-size: 0.95rem;
-      color: #5a67d8;
     }
 
     textarea {
       width: 100%;
       padding: 12px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
       font-size: 16px;
       /* Prevents zoom on iOS */
       font-family: inherit;
       resize: vertical;
       min-height: 100px;
       transition: border-color 0.2s;
-      background: #f7fafc;
-      color: #2d3748;
     }
 
     textarea:focus {
       outline: none;
-      border-color: #a3bffa;
-      background: #ffffff;
+      border-color: #2196F3;
     }
 
     /* Button - Touch-Friendly */
     button {
       margin: 12px 0;
       padding: 14px 24px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #2196F3;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       font-size: 1rem;
       width: 100%;
-      transition: all 0.3s;
+      transition: background 0.2s;
       min-height: 48px;
       /* Touch-friendly */
-      box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
     }
 
     button:hover {
-      background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+      background: #1976D2;
     }
 
     button:active {
-      transform: translateY(0);
+      background: #1565C0;
     }
 
     button:disabled {
-      background: #e2e8f0;
-      color: #a0aec0;
+      background: #ccc;
       cursor: not-allowed;
-      box-shadow: none;
     }
 
     /* Loading State */
@@ -152,7 +139,7 @@
       width: 16px;
       height: 16px;
       border: 2px solid #ccc;
-      border-top-color: #667eea;
+      border-top-color: #2196F3;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
       margin-right: 8px;
@@ -174,83 +161,68 @@
     }
 
     .section {
-      background: #ffffff;
+      background: white;
       padding: 18px;
       margin: 12px 0;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     /* Steps & Content Boxes */
     .step {
-      background: linear-gradient(135deg, #f0f4ff 0%, #e9f0ff 100%);
-      padding: 14px;
+      background: #f5f5f5;
+      padding: 12px;
       margin: 10px 0;
-      border-left: 4px solid #a3bffa;
-      border-radius: 8px;
+      border-left: 3px solid #2196F3;
+      border-radius: 4px;
       font-size: 0.95rem;
-      box-shadow: 0 1px 2px rgba(163, 191, 250, 0.1);
-    }
-
-    .step strong {
-      color: #5a67d8;
     }
 
     .step small {
       display: block;
       margin-top: 4px;
-      color: #718096;
+      color: #666;
       font-size: 0.85rem;
     }
 
     /* Scam Warnings */
     .scam {
-      background: linear-gradient(135deg, #fff5f7 0%, #ffe4e6 100%);
-      padding: 14px;
+      background: #ffe0e0;
+      padding: 12px;
       margin: 10px 0;
-      border-left: 4px solid #fc8181;
-      border-radius: 8px;
+      border-left: 3px solid #c62828;
+      border-radius: 4px;
       font-size: 0.95rem;
-      box-shadow: 0 1px 2px rgba(252, 129, 129, 0.1);
-    }
-
-    .scam strong {
-      color: #c53030;
     }
 
     /* Clarification Section */
     .clarification {
-      background: linear-gradient(135deg, #fffaf0 0%, #fef5e7 100%);
+      background: #fff3e0;
       padding: 18px;
       margin: 12px 0;
-      border-left: 4px solid #f6ad55;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(246, 173, 85, 0.1);
+      border-left: 4px solid #ff9800;
+      border-radius: 4px;
     }
 
     .clarification h3 {
-      color: #c05621;
+      color: #f57c00;
       margin-bottom: 10px;
       font-size: 1.1rem;
-      font-weight: 600;
     }
 
     /* Unable to Answer Section */
     .unable-to-answer {
-      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      background: #f3e5f5;
       padding: 18px;
       margin: 12px 0;
-      border-left: 4px solid #b794f4;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(183, 148, 244, 0.1);
+      border-left: 4px solid #9c27b0;
+      border-radius: 4px;
     }
 
     .unable-to-answer h3 {
-      color: #6b46c1;
+      color: #7b1fa2;
       margin-bottom: 10px;
       font-size: 1.1rem;
-      font-weight: 600;
     }
 
     .unable-to-answer p {
@@ -277,83 +249,76 @@
     }
 
     .suggestions li {
-      background: #ffffff;
+      background: white;
       padding: 12px 15px;
       margin: 8px 0;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      border: 2px solid #e2e8f0;
-      transition: all 0.3s;
+      border: 2px solid #ddd;
+      transition: all 0.2s;
       font-size: 0.95rem;
       min-height: 44px;
       /* Touch-friendly */
       display: flex;
       align-items: center;
-      color: #4a5568;
     }
 
     .suggestions li:hover {
-      background: linear-gradient(135deg, #f0f4ff 0%, #e9f0ff 100%);
-      border-color: #a3bffa;
+      background: #e3f2fd;
+      border-color: #2196F3;
       transform: translateX(5px);
-      box-shadow: 0 2px 4px rgba(163, 191, 250, 0.2);
     }
 
     .suggestions li:active {
-      background: #e9f0ff;
+      background: #bbdefb;
     }
 
     /* Intent Badge */
     .intent-badge {
       display: inline-block;
-      background: linear-gradient(135deg, #f0f4ff 0%, #e9f0ff 100%);
-      color: #5a67d8;
-      padding: 6px 14px;
-      border-radius: 20px;
+      background: #e3f2fd;
+      color: #1976D2;
+      padding: 4px 12px;
+      border-radius: 12px;
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: bold;
       margin-bottom: 10px;
-      border: 1px solid #cbd5e0;
     }
 
     /* Case Cards */
     .case-card {
-      background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+      background: #f9f9f9;
       padding: 14px;
       margin: 10px 0;
-      border-radius: 8px;
-      border-left: 4px solid #68d391;
+      border-radius: 4px;
+      border-left: 3px solid #4CAF50;
       font-size: 0.95rem;
-      box-shadow: 0 1px 3px rgba(104, 211, 145, 0.1);
     }
 
     .case-card strong {
-      color: #2f855a;
+      color: #1976D2;
       display: block;
       margin-bottom: 6px;
-      font-weight: 600;
     }
 
     .case-card .category {
       display: inline-block;
-      background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+      background: #4CAF50;
       color: white;
-      padding: 3px 10px;
-      border-radius: 12px;
+      padding: 2px 8px;
+      border-radius: 3px;
       font-size: 0.7rem;
       margin-left: 8px;
-      font-weight: 600;
     }
 
     .case-card a {
-      color: #5a67d8;
+      color: #2196F3;
       text-decoration: none;
       font-weight: 500;
     }
 
     .case-card a:hover {
       text-decoration: underline;
-      color: #4c51bf;
     }
 
     /* Tablet Styles (768px and up) */
